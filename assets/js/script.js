@@ -32,6 +32,22 @@ function getWeatherCurrent(city){
     });
 }
 
+
+//function that will create HTML elements for a 5 day forcast
+function getWeatherFiveDay(city){
+    //first passes the city name into a fetch to get the latitude and longitude of the city
+    fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
+    .then(response => response.json())
+    .then(data => {
+        fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + data[0].lat + "&units=imperial&lon=" + data[0].lon + "&appid=" + apiKey)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+    })
+}
+
 function getCityName(){
-    getWeatherCurrent(searchBar.value)
+    getWeatherCurrent(searchBar.value);
+    getWeatherFiveDay(searchBar.value);
 }
