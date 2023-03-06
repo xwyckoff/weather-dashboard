@@ -5,7 +5,8 @@ let cityEl = document.querySelector("#cityName");
 let tempEl = document.querySelector("#temp");
 let windEl = document.querySelector("#wind");
 let humidEl = document.querySelector("#humidity");
-let currentIcon = document.querySelector("#wicon")
+let currentIcon = document.querySelector("#wicon");
+let searchBar = document.querySelector("#searchBar");
 
 
 //function that will set the HTML elements to the current weather conditions of the given city name
@@ -24,10 +25,13 @@ function getWeatherCurrent(city){
             tempEl.textContent = "Temp: " + data.main.temp + "°F";
             windEl.textContent = "Wind: " + data.wind.speed + " MPH";
             humidEl.textContent = "Humidity: " + data.main.humidity + "%"
+            //gets weather icon from openweathermap using the provided icon code
             currentIcon.src = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
             
         })
     });
 }
 
-getWeatherCurrent("Columbus");
+function getCityName(){
+    getWeatherCurrent(searchBar.value)
+}
