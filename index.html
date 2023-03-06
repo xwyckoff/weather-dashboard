@@ -2,30 +2,64 @@
 <html>
     <head>
         <title>Weather Dashboard</title>
-        <link >
+        <link href="./assets/css/styles.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     </head>
 
-    <body>
-        <header>
+    <body class="container-fluid">
+        <header class="navbar">
             <h1>Weather Dashboard</h1>
         </header>
-        <main>
-            <section id="searchSection">
-                <h2>Search for a City:</h2>
-                <input type="text" id="searchBar">
-                <button id="searchButton" onclick="getCityName()">Search</button>
-                <hr>
-                <section id="history"></section>
-            </section>
+        <main class="row">
+            <section id="searchSection" class="col-3" style="height:100%;">
 
-            <section id="today">
-                <span id="currentTitle"><h2 id="cityName"></h2><img id="wicon" src=""></span>
-                <p id="temp"></p>
-                <p id="wind"></p>
-                <p id="humidity"></p>
+                    <h2>Search for a City:</h2>
+                    <input type="text" id="searchBar">
+                    <button id="searchButton" onclick="getCityName()">Search</button>
+                    <hr>
+                    <section id="history"></section>
+
             </section>
-            <section id="5day"></section>
+            <section id="today" class="col-9">
+                    <span id="currentTitle"><h2 id="cityName"></h2><img id="wicon" src=""></span>
+                    <p id="temp"></p>
+                    <p id="wind"></p>
+                    <p id="humidity"></p>
+            </section>
         </main>
+        <aside class="row">
+                <div class="card col-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Test</h5>
+                        <p class="card-text">test</p>
+                    </div>
+                </div>
+                <div class="card col-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Test</h5>
+                        <p class="card-text">test</p>
+                    </div>
+                </div>
+                <div class="card col-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Test</h5>
+                        <p class="card-text">test</p>
+                    </div>
+                </div>
+                <div class="card col-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Test</h5>
+                        <p class="card-text">test</p>
+                    </div>
+                </div>
+                <div class="card col-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Test</h5>
+                        <p class="card-text">test</p>
+                    </div>
+                </div>
+        </aside>
         <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
         <script src="./assets/js/script.js"></script>
     </body>

@@ -43,8 +43,9 @@ function getWeatherFiveDay(city){
         .then(data => {
             //create an element for every 8th item in the list of forecasts given (every 8th item is midnight every day in the forecast)
             for(let i=0; i < data.list.length; i += 8){
-                console.log(data.list[i]);
-                console.log(dayjs.unix(data.list[i].dt));
+                let currentDay = data.list[i];
+                console.log(currentDay);
+                console.log(dayjs.unix(currentDay.dt));
             }
         })
     })
