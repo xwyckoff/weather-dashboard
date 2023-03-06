@@ -20,7 +20,6 @@ function getWeatherCurrent(city){
         .then(response => response.json())
         .then(data => {
             //take the current weather data and display it on the page
-            console.log(data);
             cityEl.textContent = data.name + " (" + today.format('MM/DD/YYYY') + ")";
             tempEl.textContent = "Temp: " + data.main.temp + "°F";
             windEl.textContent = "Wind: " + data.wind.speed + " MPH";
@@ -42,7 +41,11 @@ function getWeatherFiveDay(city){
         fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + data[0].lat + "&units=imperial&lon=" + data[0].lon + "&appid=" + apiKey)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            //create an element for every 8th item in the list of forecasts given (every 8th item is midnight every day in the forecast)
+            for(let i=0; i < data.list.length; i += 8){
+                console.log(data.list[i]);
+                console.log(dayjs.unix(data.list[i].dt));
+            }
         })
     })
 }
