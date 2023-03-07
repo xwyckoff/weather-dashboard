@@ -5,9 +5,9 @@ let cityEl = document.querySelector("#cityName");
 let tempEl = document.querySelector("#temp");
 let windEl = document.querySelector("#wind");
 let humidEl = document.querySelector("#humidity");
-//let currentIcon = document.querySelector("#wicon");
 let searchBar = document.querySelector("#searchBar");
 let forecastSection = document.querySelector("#forecast");
+let historySection = document.querySelector("#history");
 
 
 //function that will set the HTML elements to the current weather conditions of the given city name
@@ -21,6 +21,7 @@ function getWeatherCurrent(city){
         .then(response => response.json())
         .then(data => {
             //take the current weather data and display it on the page
+            addToHistory(data.name);
             let currentIcon = document.createElement("img");
             cityEl.textContent = data.name + " (" + today.format('MM/DD/YYYY') + ")";
             tempEl.textContent = "Temp: " + data.main.temp + "°F";
@@ -47,15 +48,11 @@ function getWeatherFiveDay(city){
         .then(data => {
             //create an element for every 8th item in the list of forecasts given (every 8th item is midnight every day in the forecast)
             //have to start at the third element to the five day forecast due to dayjs being in GMT timezone for some reason
-            console.log(data);
             for(let i=2; i < data.list.length; i += 8){
                 let currentDay = data.list[i];
                 //create the card element
                 let card = document.createElement("div");
-                card.classList.add("card");
-                card.classList.add("bg-dark");
-                card.classList.add("text-white")
-                card.classList.add("col-2");
+                card.classList.add("card", "bg-dark", "text-white", "col-2");
                 let cardBody = document.createElement("div");
                 cardBody.classList.add("card-body");
                 card.append(cardBody)
@@ -83,6 +80,30 @@ function getWeatherFiveDay(city){
             }
         })
     })
+}
+
+//function to add a given city name to the localStorage
+function addToHistory(city){
+    history.push(city);
+    //removes any duplicates from the array by casting it as a set
+    history = [...new Set(history)]
+    localStorage.setItem("cityName", JSON.stringify(history));
+    //populateHistory();
+}
+
+//function to populate the history section
+function populateHistory(){
+    //populates list of searched cities, creates it as a set to remove any duplicates
+    historySection.innerHTML = "";
+    history = JSON.parse(localStorage.getItem("cityName"));
+    history.forEach(city => {
+        let historyButton = document.createElement("button");
+        historyButton.classList.add("btn", "btn-secondary", "w-25", "col-2");
+        historyButton.textContent = city;
+        historyButton.onclick = getWeatherCurrent(historyButton.textContent);
+        historySection.append(historyButton);
+    });
+
 }
 
 function getCityName(){
