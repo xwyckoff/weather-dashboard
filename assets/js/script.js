@@ -15,10 +15,7 @@ function getWeatherCurrent(city){
     fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
     .then(response => response.json())
     .then(data => {
-        //if an invalid city name was put in, the API returns a blank array
-        if(data){
             alert("No weather information found!");
-        } else {
             //uses the latitude and longitude in a fetch for the current weather
             fetch("https://api.openweathermap.org/data/2.5/weather?lat=" + data[0].lat + "&lon=" + data[0].lon + "&units=imperial&appid=" + apiKey)
             .then(response => response.json())
@@ -36,7 +33,6 @@ function getWeatherCurrent(city){
                 cityEl.append(currentIcon);
                 
             })
-        }
     });
 }
 
