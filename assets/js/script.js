@@ -1,5 +1,4 @@
 const apiKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
-let history = [];
 let today = dayjs();
 let cityEl = document.querySelector("#cityName");
 let tempEl = document.querySelector("#temp");
@@ -8,7 +7,7 @@ let humidEl = document.querySelector("#humidity");
 let searchBar = document.querySelector("#searchBar");
 let forecastSection = document.querySelector("#forecast");
 let historySection = document.querySelector("#history");
-
+let historyList = [];
 
 //function that will set the HTML elements to the current weather conditions of the given city name
 function getWeatherCurrent(city){
@@ -16,22 +15,28 @@ function getWeatherCurrent(city){
     fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
     .then(response => response.json())
     .then(data => {
-        //uses the latitude and longitude in a fetch for the current weather
-        fetch("https://api.openweathermap.org/data/2.5/weather?lat=" + data[0].lat + "&lon=" + data[0].lon + "&units=imperial&appid=" + apiKey)
-        .then(response => response.json())
-        .then(data => {
-            //take the current weather data and display it on the page
-            addToHistory(data.name);
-            let currentIcon = document.createElement("img");
-            cityEl.textContent = data.name + " (" + today.format('MM/DD/YYYY') + ")";
-            tempEl.textContent = "Temp: " + data.main.temp + "°F";
-            windEl.textContent = "Wind: " + data.wind.speed + " MPH";
-            humidEl.textContent = "Humidity: " + data.main.humidity + "%"
-            //gets weather icon from openweathermap using the provided icon code and add it to the city name
-            currentIcon.src = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
-            cityEl.append(currentIcon);
-            
-        })
+        //if an invalid city name was put in, the API returns a blank array
+        if(data){
+            alert("No weather information found!");
+        } else {
+            //uses the latitude and longitude in a fetch for the current weather
+            fetch("https://api.openweathermap.org/data/2.5/weather?lat=" + data[0].lat + "&lon=" + data[0].lon + "&units=imperial&appid=" + apiKey)
+            .then(response => response.json())
+            .then(data => {
+                
+                //take the current weather data and display it on the page
+                addToHistory(data.name);
+                let currentIcon = document.createElement("img");
+                cityEl.textContent = data.name + " (" + today.format('MM/DD/YYYY') + ")";
+                tempEl.textContent = "Temp: " + data.main.temp + "°F";
+                windEl.textContent = "Wind: " + data.wind.speed + " MPH";
+                humidEl.textContent = "Humidity: " + data.main.humidity + "%"
+                //gets weather icon from openweathermap using the provided icon code and add it to the city name
+                currentIcon.src = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
+                cityEl.append(currentIcon);
+                
+            })
+        }
     });
 }
 
@@ -84,26 +89,37 @@ function getWeatherFiveDay(city){
 
 //function to add a given city name to the localStorage
 function addToHistory(city){
-    history.push(city);
-    //removes any duplicates from the array by casting it as a set
-    history = [...new Set(history)]
-    localStorage.setItem("cityName", JSON.stringify(history));
-    //populateHistory();
+    if(!historyList.includes(city)){
+        historyList.push(city);
+        createHistoryButton(city);
+        localStorage.setItem("cityName", JSON.stringify(historyList));
+    }
 }
 
 //function to populate the history section
 function populateHistory(){
     //populates list of searched cities, creates it as a set to remove any duplicates
-    historySection.innerHTML = "";
-    history = JSON.parse(localStorage.getItem("cityName"));
-    history.forEach(city => {
-        let historyButton = document.createElement("button");
-        historyButton.classList.add("btn", "btn-secondary", "w-25", "col-2");
-        historyButton.textContent = city;
-        historyButton.onclick = getWeatherCurrent(historyButton.textContent);
-        historySection.append(historyButton);
+    historySection.innerHTML = "<h2>History</h2>";
+    //checks if the item exists in localStorage, if not, it sets the array to empty
+    JSON.parse(localStorage.getItem("cityName")) ? historyList = JSON.parse(localStorage.getItem("cityName")) : historyList = [];
+    historyList.forEach(city => {
+        createHistoryButton(city);
     });
 
+}
+
+
+//function to create button for search history
+function createHistoryButton(city){
+    let historyButton = document.createElement("button");
+    historyButton.classList.add("btn", "btn-secondary", "w-25", "col-2", "mb-2");
+    historyButton.textContent = city;
+    historyButton.addEventListener("click", () =>{
+        getWeatherCurrent(historyButton.textContent);
+        getWeatherFiveDay(historyButton.textContent);
+    })
+    historySection.append(historyButton);
+    historySection.append(document.createElement("br"));
 }
 
 function getCityName(){
