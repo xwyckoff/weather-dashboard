@@ -1,4 +1,4 @@
-const apiKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
+const apiKey = '3071f4efefdbaf985923f0236b6da1c3';
 let today = dayjs();
 let cityEl = document.querySelector("#cityName");
 let tempEl = document.querySelector("#temp");
