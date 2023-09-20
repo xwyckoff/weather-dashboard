@@ -12,7 +12,7 @@ let historyList = [];
 //function that will set the HTML elements to the current weather conditions of the given city name
 function getWeatherCurrent(city){
     //first passes the city name into a fetch to get the latitude and longitude of the city
-    fetch("https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
+    fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
     .then(response => response.json())
     .then(data => {
             //uses the latitude and longitude in a fetch for the current weather
@@ -28,7 +28,7 @@ function getWeatherCurrent(city){
                 windEl.textContent = "Wind: " + data.wind.speed + " MPH";
                 humidEl.textContent = "Humidity: " + data.main.humidity + "%"
                 //gets weather icon from openweathermap using the provided icon code and add it to the city name
-                currentIcon.src = "https://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
+                currentIcon.src = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
                 cityEl.append(currentIcon);
                 
             })
@@ -40,7 +40,7 @@ function getWeatherCurrent(city){
 function getWeatherFiveDay(city){
     forecastSection.innerHTML = "";
     //first passes the city name into a fetch to get the latitude and longitude of the city
-    fetch("https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
+    fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
     .then(response => response.json())
     .then(data => {
         fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + data[0].lat + "&units=imperial&lon=" + data[0].lon + "&appid=" + apiKey)
@@ -61,7 +61,7 @@ function getWeatherFiveDay(city){
                 cardTitle.innerText = dayjs.unix(currentDay.dt).format('MM/DD/YYYY');
                 cardBody.append(cardTitle);
                 let cardIcon = document.createElement("img");
-                cardIcon.setAttribute("src", "https://openweathermap.org/img/w/" + currentDay.weather[0].icon + ".png");
+                cardIcon.setAttribute("src", "http://openweathermap.org/img/w/" + currentDay.weather[0].icon + ".png");
                 cardBody.append(cardIcon);
                 let cardTemp = document.createElement("p");
                 cardTemp.classList.add("card-text")
