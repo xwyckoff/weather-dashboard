@@ -12,7 +12,7 @@ let historyList = [];
 //function that will set the HTML elements to the current weather conditions of the given city name
 function getWeatherCurrent(city){
     //first passes the city name into a fetch to get the latitude and longitude of the city
-    fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=" + apiKey)
+    fetch(`https://geocode.maps.co/search?q={${city}}`)
     .then(response => response.json())
     .then(data => {
             //uses the latitude and longitude in a fetch for the current weather
